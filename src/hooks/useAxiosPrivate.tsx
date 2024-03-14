@@ -10,8 +10,8 @@ export default function useAxiosPrivate() {
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
-        if (!config.headers["Authorization"] && user?.access) {
-          config.headers["Authorization"] = `Bearer ${user?.access}`;
+        if (!config.headers["Authorization"] && user?.token) {
+          config.headers["Authorization"] = `Bearer ${user?.token}`;
         }
         return config;
       },

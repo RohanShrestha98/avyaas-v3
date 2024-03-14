@@ -1,18 +1,21 @@
-import { Input } from '@/components/ui/input'
 
-export default function InputField({ type, placeholder, classname, defaultValue, required, label }) {
+export default function InputField({ type = "text", placeholder = "", className = "", defaultValue = "", required = false, label = "", register = () => { }, name = "" }) {
     return (
         <div>
             {
-                label ?
-                    <div>
-                        <div>{label}</div>
-                        <Input type={type} className={classname} defaultValue={defaultValue} required={required} placeholder={placeholder} />
-                    </div>
-                    :
-                    <Input type={type} className={classname} defaultValue={defaultValue} required={required} placeholder={placeholder} />
+                label && <p className="text-[#344054] font-medium text-sm mb-1">{label} {required && <span className="text-red-600">*</span>} </p>
             }
-
+            <input
+                placeholder={placeholder}
+                defaultValue={defaultValue}
+                {...register(name)}
+                type={type}
+                style={{ borderRadius: "6px" }}
+                className={
+                    `flex h-8 w-full border  border-gray-300 rounded-lg bg-white px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50
+                   ${className}`
+                }
+            />
         </div>
     )
 }

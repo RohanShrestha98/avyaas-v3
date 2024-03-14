@@ -1,12 +1,15 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Table } from "../../components/Table";
+import { ReactTable } from "../../components/Table";
 import CustomSelect from "../../ui/CustomSelect";
 import InputField from "@/ui/InputField";
 import Button from "@/ui/Button";
 import Pagination from "@/components/Pagination";
+import { useForm } from "react-hook-form";
 
 export default function Users() {
+
+    const { register } = useForm()
     const navigate = useNavigate()
     const options = [
         {
@@ -162,12 +165,12 @@ export default function Users() {
     return (
         <div className="flex flex-col gap-4 p-6">
             <div className="flex items-center gap-2">
-                <InputField placeholder={"Search courses"} type={"text"} classname={""} />
+                <InputField register={register} name="courses" placeholder={"Search courses"} classname={""} />
                 <CustomSelect className={""} options={options} label={"Select Options"} placeholder={"Select Options 23"} />
                 <Button buttonName={"Course"} />
                 <Pagination />
             </div>
-            <Table
+            <ReactTable
                 loading={false}
                 error={false}
                 columns={columns}

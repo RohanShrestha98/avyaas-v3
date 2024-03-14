@@ -17,5 +17,5 @@ export const useQueryData = (key: string[], path: string, params = "", enabled =
 };
 
 export const useTeacherData = () =>
-  useQueryData(["teacher"], "api/v3/teacher/list/");
+  useQueryData(["teacher"], `api/v3/teacher/list/`);
 

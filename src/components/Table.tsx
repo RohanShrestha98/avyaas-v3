@@ -9,20 +9,17 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 
-const Table = React.forwardRef(
+const ReactTable = React.forwardRef(
     (
         {
             columns,
             data,
-            currentPage,
-            totalPage,
             loading,
             title,
             emptyImage,
             error,
             setSelectedRows,
             rowSelectable,
-            handlePageChange,
         },
         ref,
     ) => {
@@ -90,7 +87,7 @@ const Table = React.forwardRef(
                             </tr>
                         ))}
                     </thead>
-                    <tbody >
+                    <tbody className="bg-white">
                         {data?.length > 0 &&
                             table?.getRowModel()?.rows?.map((row, index) => {
                                 return (
@@ -143,6 +140,6 @@ const Table = React.forwardRef(
     },
 );
 
-Table.displayName = "Table";
+ReactTable.displayName = "ReactTable";
 
-export { Table };
+export { ReactTable };
