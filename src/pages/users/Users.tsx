@@ -1,15 +1,11 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ReactTable } from "../../components/Table";
-import CustomSelect from "../../ui/CustomSelect";
-import InputField from "@/ui/InputField";
-import Button from "@/ui/Button";
-import Pagination from "@/components/Pagination";
-import { useForm } from "react-hook-form";
+import SearchPagination from "@/components/SearchPagination";
+import { useStudentData } from "@/hooks/useQueryData";
 
 export default function Users() {
-
-    const { register } = useForm()
+    const { data } = useStudentData()
     const navigate = useNavigate()
     const options = [
         {
@@ -99,37 +95,59 @@ export default function Users() {
     const columns = useMemo(
         () => [
             {
-                accessorFn: row => row?.destination,
-                id: "destination",
-                header: () => <span>Destination</span>,
-                footer: props => props.column.id,
-            },
-            {
-                accessorFn: row => row?.duration,
-                id: "duration",
-                cell: info => info.getValue(),
-                header: () => <span>Duration</span>,
-                footer: props => props.column.id,
-            },
-            {
-                accessorFn: row => row?.price,
+                accessorFn: row => row?.name,
                 id: "price",
                 cell: info => {
                     return (
-                        <p>
-                            Rs. {info?.row?.original?.price}
+                        <div className="flex items-center gap-1">
+                            {
+                                info?.row?.original?.image ? <img className="h-8 w-8 object-cover rounded-full" src={info?.row?.original?.image} alt="" />
+                                    : <div className="h-8 w-8 rounded-full bg-gray-100"></div>
+                            }
+                            <p className="flex items-center gap-1">
+                                {info?.row?.original?.firstName}
+                                {info?.row?.original?.middleName}
+                                {info?.row?.original?.lastName}
+                            </p>
+                        </div>
+
+                    )
+                },
+                // info.getValue(),
+                header: () => <span>Name</span>,
+                footer: props => props.column.id,
+            },
+            {
+                accessorFn: row => row?.id,
+                id: "id",
+                header: () => <span>ID</span>,
+                footer: props => props.column.id,
+            },
+            {
+                accessorFn: row => row?.email,
+                id: "email",
+                header: () => <span>Email</span>,
+                footer: props => props.column.id,
+            },
+            {
+                accessorFn: row => row?.phone,
+                id: "phone",
+                cell: info => info.getValue(),
+                header: () => <span>Phone</span>,
+                footer: props => props.column.id,
+            },
+            {
+                accessorFn: row => row?.verified,
+                id: "verified",
+                cell: info => {
+                    return (
+                        <p className={`inline-block text-sm px-3 rounded-full py-[2px] font-medium ${info?.row?.original?.verified ? "bg-[#ECFDF3] text-[#027A48]" : "bg-[#FEF3F2] text-[#B42318]"}`}>
+                            {info?.row?.original?.verified ? "Verified" : "Not verified"}
                         </p>
                     )
                 },
                 // info.getValue(),
-                header: () => <span>Price per person</span>,
-                footer: props => props.column.id,
-            },
-            {
-                accessorFn: row => row?.vehicle,
-                id: "vehicle",
-                cell: info => info.getValue(),
-                header: () => <span>Vehicle Type</span>,
+                header: () => <span>Verified</span>,
                 footer: props => props.column.id,
             },
             {
@@ -137,22 +155,10 @@ export default function Users() {
                 id: "action",
                 cell: (info) => {
                     return (
-                        <div className="flex gap-2 text-xl justify-center">
-                            <div onClick={() => navigate("/detail")}>
-                                {/* <ViewTableSvg className='cursor-pointer' /> */}
+                        <div className="flex gap-2  justify-center">
+                            <div className="border border-[#4365A7] text-xs font-medium px-4 py-1 rounded-full cursor-pointer text-[#4365A7]">
+                                Add Payment
                             </div>
-                            <div onClick={() => {
-                                navigate("/addPackages", {
-                                    state: {
-                                        data: info?.row?.original,
-                                    },
-                                });
-                            }}>
-                                {/* <EditTableSvg className='cursor-pointer' /> */}
-                            </div>
-                            {/* <div onClick={() => setModalOpen(true)}> */}
-                            {/* <DeleteTableSvg className='cursor-pointer' /> */}
-                            {/* </div> */}
                         </div>
                     );
                 },
@@ -164,20 +170,15 @@ export default function Users() {
     );
     return (
         <div className="flex flex-col gap-4 p-6">
-            <div className="flex items-center gap-2">
-                <InputField register={register} name="courses" placeholder={"Search courses"} classname={""} />
-                <CustomSelect className={""} options={options} label={"Select Options"} placeholder={"Select Options 23"} />
-                <Button buttonName={"Course"} />
-                <Pagination />
+            <div>
+                <SearchPagination options={options} inputPlaceholder={"Search User"} selectPlaceholder={"Select Course"} />
+                <ReactTable
+                    columns={columns}
+                    data={data?.data ?? []}
+                    currentPage={1}
+                    totalPage={1}
+                />
             </div>
-            <ReactTable
-                loading={false}
-                error={false}
-                columns={columns}
-                data={trips ?? []}
-                currentPage={1}
-                totalPage={1}
-            />
         </div>
     )
 }

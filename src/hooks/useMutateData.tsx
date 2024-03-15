@@ -38,3 +38,5 @@ export const useAuthSignupMutation = () =>
   useMutate(["signup"], "auth/v3/register");
 export const useInstructorMutation = () =>
   useMutate(["teacher"], "api/v3/teacher/create/", "multipart/form-data");
+export const useCourseMutation = () =>
+  useMutate(["course"], "api/v3/course/", "multipart/form-data");

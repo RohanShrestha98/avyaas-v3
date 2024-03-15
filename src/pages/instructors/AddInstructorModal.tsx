@@ -1,38 +1,50 @@
 import ChooseImage from "@/components/ChooseImage"
-import * as Yup from "yup";
 
 import {
     Dialog,
     DialogContent,
-    DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
 import Button from "@/ui/Button"
 import CustomSelect from "@/ui/CustomSelect"
 import InputField from "@/ui/InputField"
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useInstructorMutation } from "@/hooks/useMutateData";
+import { useState } from "react";
 
 
-export default function AddInstructorModal({ asChild, children }) {
+export default function AddInstructorModal({ asChild, children, edit }) {
+    const [selectedCourse, setSelectedCourse] = useState()
+    const [selectedSubject, setSelectedSubject] = useState()
+    const [selectedGender, setSelectedGender] = useState()
     const {
         register,
-        watch,
         handleSubmit,
         formState: { errors, isValid },
         reset,
     } = useForm({
         mode: "onChange",
     });
+
     const instructorMutation = useInstructorMutation()
 
-    const onSubmitHandler = async () => {
-        const response = await 
-    }
+    const onSubmitHandler = async (data) => {
+        const postData = {
+            ...data,
+            courseid: selectedCourse,
+            subjectid: selectedSubject,
+            gender: selectedGender,
+        }
+        try {
+            const response = await instructorMutation.mutateAsync(["post", "", postData])
+            console.log("response", response)
+            reset()
+        } catch (err) {
+            console.log("err", err)
+        }
 
-    console.log("watch", watch())
+    }
     const options = [
         {
             value: "ijsd2",
@@ -62,13 +74,13 @@ export default function AddInstructorModal({ asChild, children }) {
                 {children}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]  min-w-[500px] bg-[#FAFAFA]">
-                <DialogTitle className="text-[#22244D] font-medium text-base">Add instructor</DialogTitle>
-                <form onSubmit={handleSubmit((data) => console.log("data", data))}>
+                <DialogTitle className="text-[#22244D] font-medium text-base">{edit ? "Edit" : "Add"} instructor</DialogTitle>
+                <form onSubmit={handleSubmit(onSubmitHandler)}>
                     <div className="flex flex-col gap-4">
                         <ChooseImage />
                         <div className="grid grid-cols-2 gap-2">
-                            <CustomSelect options={options} label={""} placeholder={"Select course"} className={"w-full text-sm text-gray-500"} labelName={"Course"} required={true} />
-                            <CustomSelect options={options} label={""} placeholder={"Select subject"} className={"w-full text-sm text-gray-500"} labelName={"Subject"} required={true} />
+                            <CustomSelect options={options} label={""} placeholder={"Select course"} className={"w-full text-sm text-gray-500"} labelName={"Course"} required={true} setSelectedField={setSelectedCourse} />
+                            <CustomSelect options={options} label={""} placeholder={"Select subject"} className={"w-full text-sm text-gray-500"} labelName={"Subject"} required={true} setSelectedField={setSelectedSubject} />
                         </div>
                         <div className="grid grid-cols-3 gap-2">
                             <InputField register={register} name="firstName" placeholder="Enter First Name" className="w-full text-sm text-gray-500" defaultValue="" required label="First Name" />
@@ -77,7 +89,7 @@ export default function AddInstructorModal({ asChild, children }) {
                         </div>
 
                         <div className="grid grid-cols-1 gap-2">
-                            <CustomSelect options={options} label={""} placeholder={"Select gender"} className={"w-full text-sm text-gray-500"} labelName={"Gender"} required={true} />
+                            <CustomSelect options={options} label={""} placeholder={"Select gender"} setSelectedField={setSelectedGender} className={"w-full text-sm text-gray-500"} labelName={"Gender"} required={true} />
                         </div>
                         <div className="grid grid-cols-2 gap-2">
                             <InputField register={register} name={"email"} type="email" placeholder={"Enter email"} classname={"w-full  text-sm text-gray-500"} defaultValue={""} required={false} label={"Email"} />
@@ -86,7 +98,7 @@ export default function AddInstructorModal({ asChild, children }) {
                     </div>
                     <div className="grid grid-cols-2 w-full mt-10 gap-2">
                         <Button buttonName={"Clear"} className={"w-full "} danger handleButtonClick={""} icon={""} />
-                        <Button type="submit" buttonName={"Add instructor"} handleButtonClick={() => { }} className={"w-full"} icon={""} />
+                        <Button type="submit" buttonName={`${edit ? "Edit" : "Add"} instructor`} handleButtonClick={() => { }} className={"w-full"} icon={""} />
                     </div>
                 </form>
             </DialogContent>

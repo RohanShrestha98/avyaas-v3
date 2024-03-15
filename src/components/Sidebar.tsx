@@ -27,18 +27,18 @@ export default function Sidebar() {
       icon: <FaChalkboardTeacher />,
       link: "/instructors"
     },
-    // {
-    //   id: 4,
-    //   name: "Categories",
-    //   icon: "",
-    //   link: "/categories"
-    // },
-    // {
-    //   id: 5,
-    //   name: "Courses",
-    //   icon: "",
-    //   link: "/courses"
-    // },
+    {
+      id: 4,
+      name: "Categories",
+      icon: "",
+      link: "/category"
+    },
+    {
+      id: 5,
+      name: "Courses",
+      icon: "",
+      link: "/courses"
+    },
     // {
     //   id: 6,
     //   name: "Subjects",

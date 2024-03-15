@@ -1,16 +1,15 @@
 import SearchPagination from "@/components/SearchPagination";
 import { ReactTable } from "../../components/Table";
 import { useMemo } from "react";
-import AddInstructorModal from "./AddInstructorModal";
 import TopButton from "@/components/TopButton";
-import { useTeacherData } from "@/hooks/useQueryData";
-import { useNavigate } from "react-router-dom";
+import { useCourseGroupData } from "@/hooks/useQueryData";
 import { FiEdit2 } from "react-icons/fi";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { ConvertHtmlToPlainText } from "@/utils/convertHtmlToPlainText";
+import AddCourseGroupModal from "./AddCourseGroupModal";
 
-export default function Instructor() {
-    const { data } = useTeacherData()
-    const navigate = useNavigate()
+export default function CourseGroup() {
+    const { data } = useCourseGroupData()
     const options = [
         {
             value: "ijsd2",
@@ -37,7 +36,7 @@ export default function Instructor() {
         () => [
             {
                 accessorFn: row => row?.name,
-                id: "price",
+                id: "course",
                 cell: info => {
                     return (
                         <div className="flex items-center gap-1">
@@ -46,43 +45,31 @@ export default function Instructor() {
                                     : <div className="h-8 w-8 rounded-full bg-gray-100"></div>
                             }
                             <p className="flex items-center gap-1">
-                                {info?.row?.original?.firstName}
-                                {info?.row?.original?.middleName}
-                                {info?.row?.original?.lastName}
+                                {info?.row?.original?.title}
                             </p>
                         </div>
-
                     )
                 },
-                // info.getValue(),
-                header: () => <span>Instructor Name</span>,
+                header: () => <span>Course Name</span>,
                 footer: props => props.column.id,
             },
             {
-                accessorFn: row => row?.email,
+                accessorFn: row => row?.groupID,
                 id: "destination",
-                header: () => <span>Email</span>,
+                header: () => <span>Group ID</span>,
                 footer: props => props.column.id,
             },
             {
-                accessorFn: row => row?.phone,
+                accessorFn: row => row?.description,
                 id: "duration",
-                cell: info => info.getValue(),
-                header: () => <span>Phone</span>,
-                footer: props => props.column.id,
-            },
-            {
-                accessorFn: row => row?.subject,
-                id: "price",
-                // info.getValue(),
-                header: () => <span>Subject</span>,
-                footer: props => props.column.id,
-            },
-            {
-                accessorFn: row => row?.course,
-                id: "vehicle",
-                cell: info => info.getValue(),
-                header: () => <span>Course</span>,
+                cell: info => {
+                    return (
+                        <p className="flex items-center gap-1">
+                            {info?.row?.original?.description ? ConvertHtmlToPlainText(info?.row?.original?.description?.slice(0, 50)) : "-"}
+                        </p>
+                    )
+                },
+                header: () => <span>Description</span>,
                 footer: props => props.column.id,
             },
             {
@@ -91,9 +78,9 @@ export default function Instructor() {
                 cell: (info) => {
                     return (
                         <div className="flex gap-2 text-base justify-center">
-                            <AddInstructorModal asChild edit>
+                            <AddCourseGroupModal asChild edit>
                                 <FiEdit2 className="text-[#4365A7] cursor-pointer" />
-                            </AddInstructorModal>
+                            </AddCourseGroupModal>
                             <FaRegTrashCan className="text-red-600 cursor-pointer" />
                         </div>
                     );
@@ -104,17 +91,18 @@ export default function Instructor() {
         ],
         [],
     );
+
     return (
         <div className="p-4 flex flex-col gap-4">
             <div className="flex justify-end">
-                <AddInstructorModal asChild>
+                <AddCourseGroupModal asChild>
                     <div>
-                        <TopButton buttonName={"Add Instructor"} className={""} handleButtonClick={() => { }} />
+                        <TopButton buttonName={"Add Category"} className={""} handleButtonClick={() => { }} />
                     </div>
-                </AddInstructorModal>
+                </AddCourseGroupModal>
             </div>
             <div>
-                <SearchPagination options={options} inputPlaceholder={"Search Instructors"} selectPlaceholder={"Select Course"} />
+                <SearchPagination options={options} inputPlaceholder={"Search Category"} select={false} selectPlaceholder={"Select Category"} />
                 <ReactTable
                     columns={columns}
                     data={data?.data ?? []}
