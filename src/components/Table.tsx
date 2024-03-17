@@ -14,10 +14,8 @@ const ReactTable = React.forwardRef(
         {
             columns,
             data,
-            loading,
-            title,
-            emptyImage,
-            error,
+            isLoading = false,
+            isError,
             setSelectedRows,
             rowSelectable,
         },
@@ -88,7 +86,7 @@ const ReactTable = React.forwardRef(
                         ))}
                     </thead>
                     <tbody className="bg-white">
-                        {data?.length > 0 &&
+                        {isLoading ? <>Loading...</> : isError ? <>Error</> : data?.length > 0 ?
                             table?.getRowModel()?.rows?.map((row, index) => {
                                 return (
                                     <tr key={row.id} className="">
@@ -108,16 +106,9 @@ const ReactTable = React.forwardRef(
                                         })}
                                     </tr>
                                 );
-                            })}
+                            }) : <>Empty</>}
                     </tbody>
                 </table>
-                {/* <ErrorPage
-            emptyImage={emptyImage ?? noData1}
-            title={title}
-            isFetching={loading}
-            data={data}
-            error={error}
-        /> */}
                 {data && (
                     <div
                         className={`flex ${rowSelectable ? "justify-between" : "justify-end"
@@ -126,13 +117,6 @@ const ReactTable = React.forwardRef(
                         {rowSelectable && (
                             <p>{Object?.keys(rowSelection)?.length} Rows Selected</p>
                         )}
-                        {/* {data && data?.length && !gradingCard ? (
-                <Pagination
-                    totalPage={totalPage}
-                    currentPage={currentPage}
-                    handlePageChange={handlePageChange}
-                />
-                ) : null} */}
                     </div>
                 )}
             </div>

@@ -6,10 +6,10 @@ import { useCourseData, useCourseGroupData } from "@/hooks/useQueryData";
 import { FiEdit2 } from "react-icons/fi";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { ConvertHtmlToPlainText } from "@/utils/convertHtmlToPlainText";
-import AddCourseModal from "./AddCourseModal";
+import AddCourseModal from "./AddSubjectModal";
 import { convertToSelectOptions } from "@/utils/convertToSelectOptions";
 
-export default function Courses() {
+export default function Subjects() {
     const [searchText, setSearchText] = useState("")
     const [selectedField, setSelectedField] = useState("")
     const [pageSize, setPageSize] = useState("10")

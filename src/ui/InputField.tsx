@@ -1,5 +1,5 @@
 
-export default function InputField({ type = "text", placeholder = "", className = "", defaultValue = "", required = false, label = "", register = () => { }, name = "" }) {
+export default function InputField({ type = "text", placeholder = "", className = "", defaultValue = "", required = false, label = "", register = () => { }, name = "", setSearchText = () => { } }) {
     return (
         <div>
             {
@@ -7,6 +7,7 @@ export default function InputField({ type = "text", placeholder = "", className 
             }
             <input
                 placeholder={placeholder}
+                onChange={(e) => setSearchText(e.target.value)}
                 defaultValue={defaultValue}
                 {...register(name)}
                 type={type}
