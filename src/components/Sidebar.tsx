@@ -39,12 +39,12 @@ export default function Sidebar() {
       icon: "",
       link: "/courses"
     },
-    // {
-    //   id: 6,
-    //   name: "Subjects",
-    //   icon: "",
-    //   link: "/subjects"
-    // },
+    {
+      id: 6,
+      name: "Subjects",
+      icon: "",
+      link: "/subjects"
+    },
     // {
     //   id: 7,
     //   name: "Units",

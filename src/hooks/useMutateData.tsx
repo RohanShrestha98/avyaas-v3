@@ -40,3 +40,5 @@ export const useInstructorMutation = () =>
   useMutate(["teacher"], "api/v3/teacher/create/", "multipart/form-data");
 export const useCourseMutation = () =>
   useMutate(["course"], "api/v3/course/", "multipart/form-data");
+export const useSubjectMutation = () =>
+  useMutate(["subject"], "api/v3/subject/", "multipart/form-data");

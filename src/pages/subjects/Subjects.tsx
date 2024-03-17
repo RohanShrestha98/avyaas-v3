@@ -2,11 +2,11 @@ import SearchPagination from "@/components/SearchPagination";
 import { ReactTable } from "../../components/Table";
 import { useMemo, useState } from "react";
 import TopButton from "@/components/TopButton";
-import { useCourseData, useCourseGroupData } from "@/hooks/useQueryData";
+import { useCourseGroupData, useSubjectData } from "@/hooks/useQueryData";
 import { FiEdit2 } from "react-icons/fi";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { ConvertHtmlToPlainText } from "@/utils/convertHtmlToPlainText";
-import AddCourseModal from "./AddSubjectModal";
+import AddSubjectModal from "./AddSubjectModal";
 import { convertToSelectOptions } from "@/utils/convertToSelectOptions";
 
 export default function Subjects() {
@@ -14,22 +14,22 @@ export default function Subjects() {
     const [selectedField, setSelectedField] = useState("")
     const [pageSize, setPageSize] = useState("10")
     const [page, setPage] = useState(1)
-    const { data, isLoading, isError } = useCourseData(searchText, selectedField, pageSize, page)
+    const { data, isLoading, isError } = useSubjectData(searchText, selectedField, pageSize, page)
     const { data: courseGroupData } = useCourseGroupData()
     const courseGroupOptions = convertToSelectOptions(courseGroupData?.data)
     const columns = useMemo(
         () => [
             {
-                accessorFn: row => row?.courseID,
+                accessorFn: row => row?.subjectID,
                 id: "destination",
                 cell: info => {
                     return (
                         <p >
-                            {info?.row?.original?.courseGroup?.courseGroupID}
+                            {info?.row?.original?.subjectID}
                         </p>
                     )
                 },
-                header: () => <span>Category</span>,
+                header: () => <span>ID</span>,
                 footer: props => props.column.id,
             },
             {
@@ -39,7 +39,7 @@ export default function Subjects() {
                     return (
                         <div className="flex items-center gap-1">
                             {
-                                info?.row?.original?.image ? <img className="h-8 w-8 object-cover rounded-full" src={info?.row?.original?.image} alt="" />
+                                info?.row?.original?.thumbnail ? <img className="h-8 w-8 object-cover rounded-full" src={info?.row?.original?.image} alt="" />
                                     : <div className="h-8 w-8 rounded-full bg-gray-100"></div>
                             }
                             <p className="flex items-center gap-1">
@@ -49,13 +49,13 @@ export default function Subjects() {
 
                     )
                 },
-                header: () => <span>Course Name</span>,
+                header: () => <span>Subject Name</span>,
                 footer: props => props.column.id,
             },
             {
-                accessorFn: row => row?.courseID,
+                accessorFn: row => row?.courseTitle,
                 id: "destination",
-                header: () => <span>Course ID</span>,
+                header: () => <span>Course</span>,
                 footer: props => props.column.id,
             },
             {
@@ -77,9 +77,9 @@ export default function Subjects() {
                 cell: (info) => {
                     return (
                         <div className="flex gap-2 text-base justify-center">
-                            <AddCourseModal asChild edit editData={info?.row?.original}>
+                            <AddSubjectModal asChild edit editData={info?.row?.original}>
                                 <FiEdit2 className="text-[#4365A7] cursor-pointer" />
-                            </AddCourseModal>
+                            </AddSubjectModal>
                             <FaRegTrashCan className="text-red-600 cursor-pointer" />
                         </div>
                     );
@@ -94,21 +94,19 @@ export default function Subjects() {
     return (
         <div className="p-4 flex flex-col gap-4">
             <div className="flex justify-end">
-                <AddCourseModal asChild>
+                <AddSubjectModal asChild>
                     <div>
-                        <TopButton buttonName={"Add Course"} className={""} handleButtonClick={() => { }} />
+                        <TopButton buttonName={"Add Subject"} className={""} handleButtonClick={() => { }} />
                     </div>
-                </AddCourseModal>
+                </AddSubjectModal>
             </div>
             <div>
-                <SearchPagination totalPage={data?.totalPage} setPage={setPage} page={page} setPageSize={setPageSize} setSelectedField={setSelectedField} options={courseGroupOptions} inputPlaceholder={"Search Courses"} setSearchText={setSearchText} selectPlaceholder={"Select Course Group"} />
+                <SearchPagination totalPage={data?.totalPage} setPage={setPage} page={page} setPageSize={setPageSize} setSelectedField={setSelectedField} options={courseGroupOptions} inputPlaceholder={"Search Subject"} setSearchText={setSearchText} selectPlaceholder={"Select Course"} />
                 <ReactTable
                     isLoading={isLoading}
                     isError={isError}
                     columns={columns}
                     data={data?.data ?? []}
-                    currentPage={1}
-                    totalPage={1}
                 />
             </div>
         </div>

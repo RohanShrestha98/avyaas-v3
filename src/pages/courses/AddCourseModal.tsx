@@ -39,7 +39,7 @@ export default function AddCourseModal({ asChild, children, edit, editData }) {
     });
     const categoryOptions = convertToSelectOptions(data?.data)
 
-    const instructorMutation = useCourseMutation()
+    const courseMutation = useCourseMutation()
 
     const onSubmitHandler = async (data) => {
         const postData = {
@@ -50,7 +50,7 @@ export default function AddCourseModal({ asChild, children, edit, editData }) {
             description: value,
         }
         try {
-            const response = await instructorMutation.mutateAsync([edit ? "patch" : "post", edit ? `update/${editData?.id}` : "create/", postData])
+            const response = await courseMutation.mutateAsync([edit ? "patch" : "post", edit ? `update/${editData?.id}` : "create/", postData])
             console.log("response", response)
             setOpen(false)
             reset()

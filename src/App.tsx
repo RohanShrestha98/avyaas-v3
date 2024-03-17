@@ -7,6 +7,7 @@ import Login from './pages/auth/login'
 import AuthLayout from './layouts/AuthLayout'
 import Courses from './pages/courses/Courses'
 import CourseGroup from './pages/coursegroup/CourseGroup'
+import Subjects from './pages/subjects/Subjects'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
           <Route path='/users' element={<Users />} />
           <Route path='/instructors' element={<Instructor />} />
           <Route path='/courses' element={<Courses />} />
+          <Route path='/subjects' element={<Subjects />} />
           <Route path='/category' element={<CourseGroup />} />
         </Route>
       </Routes>
